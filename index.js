@@ -32,6 +32,7 @@ jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,function(err,decoded){
 async function run() {
     try {
         const serviceCollectiion = client.db('geniusCar').collection('services');
+        const allserviceCollectiion = client.db('geniusCar').collection('allservices');
         const orderCollection = client.db('geniusCar').collection('orders');
         app.post('/jwt', (req, res) => {
             const user = req.body;
@@ -42,6 +43,12 @@ async function run() {
         app.get('/services', async (req, res) => {
             const query = {};
             const cursor = serviceCollectiion.find(query);
+            const services = await cursor.limit(3).toArray();
+            res.send(services);
+        });
+        app.get('/allservices', async (req, res) => {
+            const query = {};
+            const cursor = allserviceCollectiion.find(query);
             const services = await cursor.toArray();
             res.send(services);
         });
