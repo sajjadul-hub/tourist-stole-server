@@ -34,6 +34,7 @@ async function run() {
         const serviceCollectiion = client.db('geniusCar').collection('services');
         const allserviceCollectiion = client.db('geniusCar').collection('allservices');
         const orderCollection = client.db('geniusCar').collection('orders');
+        const reviewsCollection = client.db('geniusCar').collection('reviews');
         app.post('/jwt', (req, res) => {
             const user = req.body;
             const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
@@ -78,12 +79,14 @@ async function run() {
             const orders = await cursor.toArray();
             res.send(orders);
         })
+       
 
         app.post('/orders',verifyJWT, async (req, res) => {
             const order = req.body;
             const result = await orderCollection.insertOne(order);
             res.send(result);
         })
+       
 
         app.patch('/orders/:id',verifyJWT, async (req, res) => {
             const id = req.params.id;
@@ -102,6 +105,35 @@ async function run() {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await orderCollection.deleteOne(query);
+            res.send(result);
+        })
+
+        // Reviews part_____________________________________________
+        app.get('/reviews',verifyJWT, async (req, res) => {
+            const decoded=req.decoded;
+            console.log("inside orders api",decoded);
+            if (decoded.email!==req.query.email) {
+             res.status(403).send({message:'unauthorized access'})
+            }
+             let query = {};
+             if (req.query.email) {
+                 query = {
+                     email: req.query.email
+                 }
+             }
+             const cursor = reviewsCollection.find(query);
+             const orders = await cursor.toArray();
+             res.send(orders);
+         })
+         app.post('/reviews',verifyJWT, async (req, res) => {
+            const order = req.body;
+            const result = await reviewsCollection.insertOne(order);
+            res.send(result);
+        })
+        app.delete('/reviews/:id',verifyJWT, async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await reviewsCollection.deleteOne(query);
             res.send(result);
         })
 
