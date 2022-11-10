@@ -62,7 +62,7 @@ async function run() {
             res.send(service);
         });
 
-        // orders api
+        // orders api part-----------------------------------------------------
 
         app.get('/orders', verifyJWT, async (req, res) => {
             const decoded = req.decoded;
@@ -109,7 +109,7 @@ async function run() {
             res.send(result);
         })
 
-        // Reviews part_____________________________________________
+        // Reviews part_____________________________________________-------------------------
         app.get('/reviews', verifyJWT, async (req, res) => {
             const decoded = req.decoded;
           
