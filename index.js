@@ -151,6 +151,14 @@ async function run() {
             const result = await reviewsCollection.deleteOne(query);
             res.send(result);
         })
+        app.get('/reviews/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log(id);
+            const query = { service: id};
+            const cursor =await reviewsCollection.find(query).toArray();
+            console.log(cursor);
+            res.send(cursor);
+        })
 
     }
     finally {
