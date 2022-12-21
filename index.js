@@ -159,6 +159,27 @@ async function run() {
             console.log(cursor);
             res.send(cursor);
         })
+        app.get('/update/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log(id);
+            const query = { _id: ObjectId(id)};
+            console.log(query);
+            const result =await reviewsCollection.find(query).toArray();
+            console.log(result);
+            res.send(result);
+        })
+        // app.patch('/reviews/:id', verifyJWT, async (req, res) => {
+        //     const id = req.params.id;
+        //     const status = req.body.status;
+        //     const query = { _id: ObjectId(id) };
+        //     const updatedDoc = {
+        //         $set: {
+        //             status: status
+        //         }
+        //     }
+        //     const result = await reviewsCollection.updateOne(query, updatedDoc);
+        //     res.send(result);
+        // })
 
     }
     finally {
