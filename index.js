@@ -9,7 +9,7 @@ const port = process.env.PORT || 5000;
 //middleweres
 app.use(cors());
 app.use(express.json());
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.p1jrtk0.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
@@ -66,7 +66,7 @@ async function run() {
 
         app.get('/orders', verifyJWT, async (req, res) => {
             const decoded = req.decoded;
-           
+
             if (decoded.email !== req.query.email) {
                 res.status(403).send({ message: 'unauthorized access' })
             }
@@ -112,7 +112,7 @@ async function run() {
         // Reviews part_____________________________________________-------------------------
         app.get('/reviews', verifyJWT, async (req, res) => {
             const decoded = req.decoded;
-          
+
             if (decoded.email !== req.query.email) {
                 res.status(403).send({ message: 'unauthorized access' })
             }
@@ -154,17 +154,17 @@ async function run() {
         app.get('/reviews/:id', async (req, res) => {
             const id = req.params.id;
             console.log(id);
-            const query = { service: id};
-            const cursor =await reviewsCollection.find(query).toArray();
+            const query = { service: id };
+            const cursor = await reviewsCollection.find(query).toArray();
             console.log(cursor);
             res.send(cursor);
         })
         app.get('/update/:id', async (req, res) => {
             const id = req.params.id;
             console.log(id);
-            const query = { _id: ObjectId(id)};
+            const query = { _id: ObjectId(id) };
             console.log(query);
-            const result =await reviewsCollection.find(query).toArray();
+            const result = await reviewsCollection.find(query).toArray();
             console.log(result);
             res.send(result);
         })
